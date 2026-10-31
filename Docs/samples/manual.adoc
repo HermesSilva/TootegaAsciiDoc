@@ -1,0 +1,122 @@
+= Tootega AsciiDoc — sample document
+Tootega Pesquisa e Inovação <contato@tootega.com.br>
+v0.1.0, 2026-10-31: first sample
+:toc:
+:imagesdir: images
+:experimental:
+:product: Tootega AsciiDoc
+
+This document exercises what the {product} editor reads and writes. Open it with the Tootega editor (the default
+for `.adoc` files) and switch between *Visual*, *Code* and *Split* in the toolbar.
+
+== Inline formatting
+
+Text can be *bold*, _italic_, `monospace`, #highlighted#, ^superscript^ and ~subscript~. Links work as bare URLs
+(https://asciidoc.org) or with text: https://docs.asciidoctor.org[Asciidoctor documentation]. Keyboard shortcuts
+use kbd:[Ctrl+Shift+V], buttons use btn:[Save] and menus use menu:File[Export > PDF].
+
+A footnote goes here.footnote:[Footnotes are collected at the end of the published document.] A cross reference
+points to <<tables>> or to <<_images_and_media,the images section>>.
+
+== Lists
+
+* Bulleted item
+** Nested item
+* Another item
+
+. First step
+. Second step
+.. Sub-step
+
+* [x] Task done
+* [ ] Task pending
+
+Term:: Definition of the term.
+Second term:: Another definition.
+
+== Admonitions
+
+NOTE: The editor keeps the source text exactly as you wrote it — only the lines you touch change.
+
+TIP: Press kbd:[Ctrl+Alt+2] to jump to Code mode and kbd:[Ctrl+Alt+3] for Split mode.
+
+[WARNING]
+====
+A multi-paragraph admonition can hold any block.
+
+Including lists:
+
+* one
+* two
+====
+
+== Code
+
+[source,typescript]
+----
+export function minimalEdit(oldText: string, newText: string): Edit | null {
+  if (oldText === newText) return null; // <1>
+  // …
+}
+----
+<1> Nothing changed: no edit at all.
+
+```json
+{ "mode": "split", "structureOpen": true }
+```
+
+....
+A literal block keeps
+   every     space.
+....
+
+[[tables]]
+== Tables
+
+.Supported export formats
+[cols="1,3", options="header"]
+|===
+|Format |Notes
+
+|HTML
+|Standalone, Asciidoctor stylesheet, images embedded as data URIs.
+
+|PDF
+|Written by the converter itself — no external tool.
+
+|Markdown
+|GitHub-flavoured; what Markdown cannot express degrades with a warning.
+
+|DocBook 5
+|For publishing chains.
+|===
+
+== Images and media
+
+.The two sides of the extension
+image::architecture.png[Extension host and webview, 640]
+
+An inline image: image:architecture.png[small, 32].
+
+video::sample.mp4[]
+
+== Quotes and sidebars
+
+[quote, Donald Knuth, The Art of Computer Programming]
+____
+Premature optimization is the root of all evil.
+____
+
+****
+A sidebar holds content related to, but apart from, the main text.
+****
+
+== Includes
+
+include::parts/included.adoc[leveloffset=+1]
+
+'''
+
+<<<
+
+That's all. Export this document with menu:Tootega AsciiDoc[Export as HTML] to see the result.

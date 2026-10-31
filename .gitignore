@@ -1,0 +1,16 @@
+node_modules/
+dist/
+out/
+*.vsix
+*.log
+.DS_Store
+.vscode-test/
+
+# The editor engine is a separate repository (github.com/Tootega/TootegaWebUI) checked out at the root.
+/TootegaWebUI/
+
+# Session exports written by the Tootega Cockpit extension (not source).
+/.cockpit/
+
+# Local copy of the AsciiDocConverter .wasm when built here (the packaged one lives in wasm/ of that repo).
+/dist-wasm/

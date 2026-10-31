@@ -1,0 +1,8 @@
+# Shell scripts need LF (CRLF breaks the shebang on Linux/macOS).
+*.sh text eol=lf
+# Source is UTF-8, no BOM.
+*.ts text
+*.tsx text
+*.json text
+*.md text
+*.css text

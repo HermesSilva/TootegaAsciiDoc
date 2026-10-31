@@ -1,0 +1,8 @@
+= An included part
+
+This file is pulled into `manual.adoc` by `include::parts/included.adoc[leveloffset=+1]`. In the editor the
+directive stays visible as a block with an *Open the included file* button; in the export its content is merged in.
+
+== Nested include
+
+include::nested.adoc[]

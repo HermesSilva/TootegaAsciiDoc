@@ -1,0 +1,327 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "AsciiDoc",
+  "scopeName": "text.asciidoc",
+  "patterns": [
+    { "include": "#comment-block" },
+    { "include": "#comment-line" },
+    { "include": "#document-title" },
+    { "include": "#section-title" },
+    { "include": "#attribute-entry" },
+    { "include": "#block-attributes" },
+    { "include": "#block-anchor" },
+    { "include": "#block-title" },
+    { "include": "#fenced-code" },
+    { "include": "#listing-block" },
+    { "include": "#literal-block" },
+    { "include": "#passthrough-block" },
+    { "include": "#delimited-blocks" },
+    { "include": "#table-block" },
+    { "include": "#admonition-paragraph" },
+    { "include": "#block-macro" },
+    { "include": "#conditional" },
+    { "include": "#list-item" },
+    { "include": "#callout-item" },
+    { "include": "#description-list" },
+    { "include": "#breaks" },
+    { "include": "#inline" }
+  ],
+  "repository": {
+    "comment-line": {
+      "match": "^//(?!/).*$",
+      "name": "comment.line.double-slash.asciidoc"
+    },
+    "comment-block": {
+      "begin": "^(/{4,})\\s*$",
+      "end": "^\\1\\s*$",
+      "name": "comment.block.asciidoc"
+    },
+    "document-title": {
+      "match": "^(=)\\s+(\\S.*?)(?:\\s+=)?\\s*$",
+      "captures": {
+        "1": { "name": "punctuation.definition.heading.asciidoc" },
+        "2": { "name": "entity.name.section.document.asciidoc markup.heading.1.asciidoc" }
+      },
+      "name": "markup.heading.document.asciidoc"
+    },
+    "section-title": {
+      "match": "^(={2,6}|#{2,6})\\s+(\\S.*?)(?:\\s+(?:=+|#+))?\\s*$",
+      "captures": {
+        "1": { "name": "punctuation.definition.heading.asciidoc" },
+        "2": { "name": "entity.name.section.asciidoc", "patterns": [{ "include": "#inline" }] }
+      },
+      "name": "markup.heading.asciidoc"
+    },
+    "attribute-entry": {
+      "match": "^(:)([A-Za-z0-9_][A-Za-z0-9_-]*)(!?)(:)(?:\\s+(.*))?$",
+      "captures": {
+        "1": { "name": "punctuation.definition.attribute.asciidoc" },
+        "2": { "name": "variable.other.attribute.asciidoc entity.name.tag.asciidoc" },
+        "3": { "name": "keyword.operator.unset.asciidoc" },
+        "4": { "name": "punctuation.definition.attribute.asciidoc" },
+        "5": { "name": "string.unquoted.attribute-value.asciidoc", "patterns": [{ "include": "#attribute-reference" }] }
+      },
+      "name": "meta.attribute-entry.asciidoc"
+    },
+    "block-attributes": {
+      "match": "^(\\[)([^\\]]*)(\\])\\s*$",
+      "captures": {
+        "1": { "name": "punctuation.definition.block-attributes.begin.asciidoc" },
+        "2": {
+          "name": "meta.block-attributes.asciidoc",
+          "patterns": [
+            { "match": "\\b(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\\b", "name": "keyword.other.admonition.asciidoc" },
+            { "match": "\\b(source|listing|literal|quote|verse|example|sidebar|pass|comment|abstract|partintro|discrete|float|horizontal|qanda|bibliography|glossary|appendix|preface|colophon|dedication|index)\\b", "name": "storage.type.block-style.asciidoc" },
+            { "match": "([A-Za-z_][A-Za-z0-9_-]*)(=)", "captures": { "1": { "name": "entity.other.attribute-name.asciidoc" }, "2": { "name": "punctuation.separator.key-value.asciidoc" } } },
+            { "match": "#[A-Za-z_][A-Za-z0-9_.:-]*", "name": "entity.name.tag.id.asciidoc" },
+            { "match": "\\.[A-Za-z_][A-Za-z0-9_-]*", "name": "entity.other.attribute-name.role.asciidoc" },
+            { "match": "%[A-Za-z_][A-Za-z0-9_-]*", "name": "entity.other.attribute-name.option.asciidoc" },
+            { "match": "\"[^\"]*\"", "name": "string.quoted.double.asciidoc" }
+          ]
+        },
+        "3": { "name": "punctuation.definition.block-attributes.end.asciidoc" }
+      }
+    },
+    "block-anchor": {
+      "match": "^(\\[\\[)([^\\]\\s,]+)(?:,([^\\]]*))?(\\]\\])\\s*$",
+      "captures": {
+        "1": { "name": "punctuation.definition.anchor.begin.asciidoc" },
+        "2": { "name": "entity.name.tag.anchor.asciidoc" },
+        "3": { "name": "string.unquoted.anchor-text.asciidoc" },
+        "4": { "name": "punctuation.definition.anchor.end.asciidoc" }
+      }
+    },
+    "block-title": {
+      "match": "^(\\.)([^\\s.].*)$",
+      "captures": {
+        "1": { "name": "punctuation.definition.block-title.asciidoc" },
+        "2": { "name": "markup.bold.block-title.asciidoc entity.name.section.block-title.asciidoc", "patterns": [{ "include": "#inline" }] }
+      }
+    },
+    "fenced-code": {
+      "patterns": [
+        { "begin": "^(```)\\s*(javascript|js)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.javascript", "patterns": [{ "include": "source.js" }] },
+        { "begin": "^(```)\\s*(typescript|ts)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.typescript", "patterns": [{ "include": "source.ts" }] },
+        { "begin": "^(```)\\s*(json)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.json", "patterns": [{ "include": "source.json" }] },
+        { "begin": "^(```)\\s*(html|xml)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.html", "patterns": [{ "include": "text.html.basic" }] },
+        { "begin": "^(```)\\s*(css)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.css", "patterns": [{ "include": "source.css" }] },
+        { "begin": "^(```)\\s*(ya?ml)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.yaml", "patterns": [{ "include": "source.yaml" }] },
+        { "begin": "^(```)\\s*(sh|bash|shell|zsh)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.shellscript", "patterns": [{ "include": "source.shell" }] },
+        { "begin": "^(```)\\s*(python|py)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.python", "patterns": [{ "include": "source.python" }] },
+        { "begin": "^(```)\\s*(csharp|cs|c#)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.csharp", "patterns": [{ "include": "source.cs" }] },
+        { "begin": "^(```)\\s*(java)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.java", "patterns": [{ "include": "source.java" }] },
+        { "begin": "^(```)\\s*(sql)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.sql", "patterns": [{ "include": "source.sql" }] },
+        { "begin": "^(```)\\s*(c)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.c", "patterns": [{ "include": "source.c" }] },
+        { "begin": "^(```)\\s*(cpp|c\\+\\+)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.cpp", "patterns": [{ "include": "source.cpp" }] },
+        { "begin": "^(```)\\s*(go)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.go", "patterns": [{ "include": "source.go" }] },
+        { "begin": "^(```)\\s*(rust|rs)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc", "contentName": "meta.embedded.block.rust", "patterns": [{ "include": "source.rust" }] },
+        { "begin": "^(```)\\s*([\\w+#-]*)\\s*$", "end": "^(```)\\s*$", "beginCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" }, "2": { "name": "fenced_code.block.language.asciidoc" } }, "endCaptures": { "1": { "name": "punctuation.definition.fence.asciidoc" } }, "name": "markup.raw.block.asciidoc" }
+      ]
+    },
+    "listing-block": {
+      "begin": "^(-{4,})\\s*$",
+      "end": "^\\1\\s*$",
+      "beginCaptures": { "1": { "name": "punctuation.definition.listing.asciidoc" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.listing.asciidoc" } },
+      "name": "markup.raw.block.listing.asciidoc",
+      "patterns": [{ "include": "#callout-marker" }]
+    },
+    "literal-block": {
+      "begin": "^(\\.{4,})\\s*$",
+      "end": "^\\1\\s*$",
+      "beginCaptures": { "1": { "name": "punctuation.definition.literal.asciidoc" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.literal.asciidoc" } },
+      "name": "markup.raw.block.literal.asciidoc"
+    },
+    "passthrough-block": {
+      "begin": "^(\\+{4,})\\s*$",
+      "end": "^\\1\\s*$",
+      "beginCaptures": { "1": { "name": "punctuation.definition.passthrough.asciidoc" } },
+      "endCaptures": { "1": { "name": "punctuation.definition.passthrough.asciidoc" } },
+      "name": "markup.raw.block.passthrough.asciidoc",
+      "contentName": "meta.embedded.block.html",
+      "patterns": [{ "include": "text.html.basic" }]
+    },
+    "delimited-blocks": {
+      "patterns": [
+        { "match": "^(={4,})\\s*$", "name": "punctuation.definition.example.asciidoc markup.quote.delimiter.asciidoc" },
+        { "match": "^(\\*{4,})\\s*$", "name": "punctuation.definition.sidebar.asciidoc markup.quote.delimiter.asciidoc" },
+        { "match": "^(_{4,})\\s*$", "name": "punctuation.definition.quote.asciidoc markup.quote.delimiter.asciidoc" },
+        { "match": "^(--)\\s*$", "name": "punctuation.definition.open-block.asciidoc markup.quote.delimiter.asciidoc" }
+      ]
+    },
+    "table-block": {
+      "begin": "^([|,:!])(===)\\s*$",
+      "end": "^\\1===\\s*$",
+      "beginCaptures": { "0": { "name": "punctuation.definition.table.asciidoc" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.table.asciidoc" } },
+      "name": "meta.table.asciidoc",
+      "patterns": [
+        { "match": "(?:^|\\s)((?:\\d+(?:\\.\\d+)?\\*?|\\.\\d+\\+|\\d+\\+)*[<^>]?(?:\\.[<^>])?[aemhdlsv]?)(\\|)", "captures": { "1": { "name": "keyword.other.cell-spec.asciidoc" }, "2": { "name": "punctuation.separator.cell.asciidoc keyword.operator.table.asciidoc" } } },
+        { "include": "#inline" }
+      ]
+    },
+    "admonition-paragraph": {
+      "match": "^(NOTE|TIP|IMPORTANT|WARNING|CAUTION)(:)\\s+",
+      "captures": {
+        "1": { "name": "keyword.other.admonition.asciidoc markup.bold.asciidoc" },
+        "2": { "name": "punctuation.separator.admonition.asciidoc" }
+      }
+    },
+    "block-macro": {
+      "match": "^(image|video|audio|include|toc)(::)([^\\[\\s]*)(\\[)([^\\]]*)(\\])\\s*$",
+      "captures": {
+        "1": { "name": "entity.name.function.macro.asciidoc support.function.asciidoc" },
+        "2": { "name": "punctuation.separator.macro.asciidoc" },
+        "3": { "name": "string.unquoted.macro-target.asciidoc markup.underline.link.asciidoc" },
+        "4": { "name": "punctuation.definition.macro-attributes.begin.asciidoc" },
+        "5": { "name": "string.other.macro-attributes.asciidoc", "patterns": [{ "include": "#attribute-reference" }] },
+        "6": { "name": "punctuation.definition.macro-attributes.end.asciidoc" }
+      },
+      "name": "meta.block-macro.asciidoc"
+    },
+    "conditional": {
+      "match": "^(ifdef|ifndef|ifeval|endif)(::)([^\\[]*)(\\[)([^\\]]*)(\\])\\s*$",
+      "captures": {
+        "1": { "name": "keyword.control.conditional.asciidoc" },
+        "2": { "name": "punctuation.separator.macro.asciidoc" },
+        "3": { "name": "variable.other.attribute.asciidoc" },
+        "4": { "name": "punctuation.definition.macro-attributes.begin.asciidoc" },
+        "5": { "name": "string.other.macro-attributes.asciidoc" },
+        "6": { "name": "punctuation.definition.macro-attributes.end.asciidoc" }
+      }
+    },
+    "list-item": {
+      "match": "^(\\s*)(\\*{1,5}|-|\\.{1,5}|\\d+\\.|[a-zA-Z]\\.|[ivxIVX]+\\))(\\s+)(?:(\\[[ xX*]\\])\\s+)?",
+      "captures": {
+        "2": { "name": "punctuation.definition.list.begin.asciidoc markup.list.bullet.asciidoc keyword.operator.list.asciidoc" },
+        "4": { "name": "keyword.other.checkbox.asciidoc" }
+      }
+    },
+    "callout-item": {
+      "match": "^(<\\d+>|<\\.>)\\s+",
+      "captures": { "1": { "name": "constant.numeric.callout.asciidoc" } }
+    },
+    "callout-marker": {
+      "match": "(?:(?://|#|;;|--|\\*/)\\s*)?(<\\d+>|<\\.>)\\s*$",
+      "captures": { "1": { "name": "constant.numeric.callout.asciidoc" } }
+    },
+    "description-list": {
+      "match": "^(\\s*)(?![*.\\-\\s]+\\s)([^\\n:]+?)(::{1,4})(?=\\s|$)",
+      "captures": {
+        "2": { "name": "entity.name.tag.term.asciidoc markup.bold.asciidoc" },
+        "3": { "name": "punctuation.separator.description.asciidoc keyword.operator.asciidoc" }
+      }
+    },
+    "breaks": {
+      "patterns": [
+        { "match": "^('''|---|\\*\\*\\*|- - -|\\* \\* \\*)\\s*$", "name": "meta.separator.thematic-break.asciidoc punctuation.definition.thematic-break.asciidoc" },
+        { "match": "^<<<\\s*$", "name": "meta.separator.page-break.asciidoc keyword.control.page-break.asciidoc" }
+      ]
+    },
+    "attribute-reference": {
+      "match": "(\\{)([A-Za-z0-9_][A-Za-z0-9_-]*)(\\})",
+      "captures": {
+        "1": { "name": "punctuation.definition.attribute-reference.begin.asciidoc" },
+        "2": { "name": "variable.other.attribute-reference.asciidoc" },
+        "3": { "name": "punctuation.definition.attribute-reference.end.asciidoc" }
+      }
+    },
+    "inline": {
+      "patterns": [
+        { "include": "#attribute-reference" },
+        { "include": "#inline-anchor" },
+        { "include": "#xref" },
+        { "include": "#inline-macro" },
+        { "include": "#url" },
+        { "include": "#inline-passthrough" },
+        { "include": "#bold" },
+        { "include": "#italic" },
+        { "include": "#mono" },
+        { "include": "#highlight" },
+        { "include": "#superscript" },
+        { "include": "#subscript" },
+        { "include": "#hard-break" }
+      ]
+    },
+    "inline-anchor": {
+      "match": "(\\[\\[)([^\\]\\s,]+)(?:,([^\\]]*))?(\\]\\])",
+      "captures": {
+        "1": { "name": "punctuation.definition.anchor.begin.asciidoc" },
+        "2": { "name": "entity.name.tag.anchor.asciidoc" },
+        "3": { "name": "string.unquoted.anchor-text.asciidoc" },
+        "4": { "name": "punctuation.definition.anchor.end.asciidoc" }
+      }
+    },
+    "xref": {
+      "match": "(<<)([^>,]+)(?:(,)([^>]*))?(>>)",
+      "captures": {
+        "1": { "name": "punctuation.definition.xref.begin.asciidoc" },
+        "2": { "name": "markup.underline.link.xref.asciidoc entity.name.tag.anchor.asciidoc" },
+        "3": { "name": "punctuation.separator.xref.asciidoc" },
+        "4": { "name": "string.unquoted.xref-text.asciidoc" },
+        "5": { "name": "punctuation.definition.xref.end.asciidoc" }
+      }
+    },
+    "inline-macro": {
+      "match": "\\b(link|xref|image|icon|kbd|btn|menu|footnote|footnoteref|anchor|indexterm|indexterm2|pass|stem|latexmath|asciimath|mailto|irc|https?|ftp)(:)([^\\[\\s]*)(\\[)((?:[^\\]\\\\]|\\\\.)*)(\\])",
+      "captures": {
+        "1": { "name": "entity.name.function.macro.asciidoc support.function.asciidoc" },
+        "2": { "name": "punctuation.separator.macro.asciidoc" },
+        "3": { "name": "markup.underline.link.asciidoc" },
+        "4": { "name": "punctuation.definition.macro-attributes.begin.asciidoc" },
+        "5": { "name": "string.other.macro-attributes.asciidoc", "patterns": [{ "include": "#attribute-reference" }, { "include": "#bold" }, { "include": "#italic" }, { "include": "#mono" }] },
+        "6": { "name": "punctuation.definition.macro-attributes.end.asciidoc" }
+      }
+    },
+    "url": {
+      "match": "(?<![\\w\"'`(\\[])(?:https?|ftp|irc)://[^\\s\\[\\]<>\"']+",
+      "name": "markup.underline.link.asciidoc"
+    },
+    "inline-passthrough": {
+      "patterns": [
+        { "match": "(\\+{3})(.+?)(\\+{3})", "captures": { "1": { "name": "punctuation.definition.passthrough.asciidoc" }, "2": { "name": "markup.raw.inline.asciidoc" }, "3": { "name": "punctuation.definition.passthrough.asciidoc" } } },
+        { "match": "(\\+{2})(.+?)(\\+{2})", "captures": { "1": { "name": "punctuation.definition.passthrough.asciidoc" }, "2": { "name": "markup.raw.inline.asciidoc" }, "3": { "name": "punctuation.definition.passthrough.asciidoc" } } }
+      ]
+    },
+    "bold": {
+      "patterns": [
+        { "match": "(\\*\\*)(.+?)(\\*\\*)", "captures": { "1": { "name": "punctuation.definition.bold.asciidoc" }, "2": { "name": "markup.bold.asciidoc", "patterns": [{ "include": "#italic" }, { "include": "#mono" }, { "include": "#attribute-reference" }] }, "3": { "name": "punctuation.definition.bold.asciidoc" } } },
+        { "match": "(?<![\\w*])(\\*)(?=\\S)([^*\\n]+?)(?<=\\S)(\\*)(?![\\w*])", "captures": { "1": { "name": "punctuation.definition.bold.asciidoc" }, "2": { "name": "markup.bold.asciidoc", "patterns": [{ "include": "#italic" }, { "include": "#mono" }, { "include": "#attribute-reference" }] }, "3": { "name": "punctuation.definition.bold.asciidoc" } } }
+      ]
+    },
+    "italic": {
+      "patterns": [
+        { "match": "(__)(.+?)(__)", "captures": { "1": { "name": "punctuation.definition.italic.asciidoc" }, "2": { "name": "markup.italic.asciidoc", "patterns": [{ "include": "#bold" }, { "include": "#mono" }] }, "3": { "name": "punctuation.definition.italic.asciidoc" } } },
+        { "match": "(?<![\\w_])(_)(?=\\S)([^_\\n]+?)(?<=\\S)(_)(?![\\w_])", "captures": { "1": { "name": "punctuation.definition.italic.asciidoc" }, "2": { "name": "markup.italic.asciidoc", "patterns": [{ "include": "#bold" }, { "include": "#mono" }] }, "3": { "name": "punctuation.definition.italic.asciidoc" } } }
+      ]
+    },
+    "mono": {
+      "patterns": [
+        { "match": "(``)(.+?)(``)", "captures": { "1": { "name": "punctuation.definition.raw.asciidoc" }, "2": { "name": "markup.raw.inline.asciidoc markup.inline.raw.asciidoc" }, "3": { "name": "punctuation.definition.raw.asciidoc" } } },
+        { "match": "(?<![\\w`])(`)(?=\\S)([^`\\n]+?)(?<=\\S)(`)(?![\\w`])", "captures": { "1": { "name": "punctuation.definition.raw.asciidoc" }, "2": { "name": "markup.raw.inline.asciidoc markup.inline.raw.asciidoc" }, "3": { "name": "punctuation.definition.raw.asciidoc" } } }
+      ]
+    },
+    "highlight": {
+      "match": "(?:(\\[\\.[^\\]]+\\]))?(?<![\\w#])(#)(?=\\S)([^#\\n]+?)(?<=\\S)(#)(?![\\w#])",
+      "captures": {
+        "1": { "name": "entity.other.attribute-name.role.asciidoc" },
+        "2": { "name": "punctuation.definition.highlight.asciidoc" },
+        "3": { "name": "markup.other.highlight.asciidoc markup.italic.asciidoc" },
+        "4": { "name": "punctuation.definition.highlight.asciidoc" }
+      }
+    },
+    "superscript": {
+      "match": "(\\^)(?=\\S)([^^\\s]+?)(\\^)",
+      "captures": { "1": { "name": "punctuation.definition.superscript.asciidoc" }, "2": { "name": "markup.other.superscript.asciidoc" }, "3": { "name": "punctuation.definition.superscript.asciidoc" } }
+    },
+    "subscript": {
+      "match": "(~)(?=\\S)([^~\\s]+?)(~)",
+      "captures": { "1": { "name": "punctuation.definition.subscript.asciidoc" }, "2": { "name": "markup.other.subscript.asciidoc" }, "3": { "name": "punctuation.definition.subscript.asciidoc" } }
+    },
+    "hard-break": {
+      "match": "\\s\\+$",
+      "name": "keyword.operator.hard-break.asciidoc"
+    }
+  }
+}

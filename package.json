@@ -1,0 +1,636 @@
+{
+  "name": "tootega-asciidoc",
+  "displayName": "Tootega AsciiDoc",
+  "description": "%ext.description%",
+  "icon": "media/icon.png",
+  "version": "0.1.0",
+  "publisher": "HermesSilva",
+  "license": "MIT",
+  "author": {
+    "name": "Tootega Pesquisa e Inovação"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HermesSilva/TootegaAsciiDoc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HermesSilva/TootegaAsciiDoc/issues"
+  },
+  "homepage": "https://github.com/HermesSilva/TootegaAsciiDoc#readme",
+  "engines": {
+    "vscode": "^1.97.0",
+    "node": ">=20"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "asciidoc",
+    "asciidoctor",
+    "wysiwyg",
+    "preview",
+    "documentation"
+  ],
+  "main": "./dist/extension.js",
+  "l10n": "./l10n",
+  "activationEvents": [
+    "onLanguage:asciidoc",
+    "onWebviewPanel:tootega.asciidoc.preview"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "%cap.untrusted%"
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "%cap.virtual%"
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "asciidoc",
+        "aliases": [
+          "AsciiDoc",
+          "Asciidoctor"
+        ],
+        "extensions": [
+          ".adoc",
+          ".asciidoc",
+          ".asc",
+          ".ad"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./media/file-icon.svg",
+          "dark": "./media/file-icon.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "asciidoc",
+        "scopeName": "text.asciidoc",
+        "path": "./syntaxes/asciidoc.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.javascript": "javascript",
+          "meta.embedded.block.typescript": "typescript",
+          "meta.embedded.block.json": "json",
+          "meta.embedded.block.html": "html",
+          "meta.embedded.block.css": "css",
+          "meta.embedded.block.xml": "xml",
+          "meta.embedded.block.yaml": "yaml",
+          "meta.embedded.block.shellscript": "shellscript",
+          "meta.embedded.block.python": "python",
+          "meta.embedded.block.csharp": "csharp",
+          "meta.embedded.block.java": "java",
+          "meta.embedded.block.sql": "sql",
+          "meta.embedded.block.c": "c",
+          "meta.embedded.block.cpp": "cpp",
+          "meta.embedded.block.go": "go",
+          "meta.embedded.block.rust": "rust"
+        }
+      }
+    ],
+    "snippets": [
+      {
+        "language": "asciidoc",
+        "path": "./snippets/asciidoc.json"
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "tootega.asciidoc.editor",
+        "displayName": "%editor.displayName%",
+        "selector": [
+          {
+            "filenamePattern": "*.{adoc,asciidoc,asc,ad}"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "commands": [
+      {
+        "command": "tootegaAsciidoc.newDocument",
+        "title": "%cmd.newDocument%",
+        "shortTitle": "%cmd.newDocument.short%",
+        "category": "Tootega AsciiDoc",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "tootegaAsciidoc.openShowcase",
+        "title": "%cmd.openShowcase%",
+        "category": "Tootega AsciiDoc",
+        "icon": "$(book)"
+      },
+      {
+        "command": "tootegaAsciidoc.openWithTootega",
+        "title": "%cmd.openWithTootega%",
+        "category": "Tootega AsciiDoc",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "tootegaAsciidoc.showSource",
+        "title": "%cmd.showSource%",
+        "category": "Tootega AsciiDoc",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "tootegaAsciidoc.showPreviewToSide",
+        "title": "%cmd.showPreviewToSide%",
+        "category": "Tootega AsciiDoc",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "tootegaAsciidoc.showLockedPreviewToSide",
+        "title": "%cmd.showLockedPreviewToSide%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.preview.toggleLock",
+        "title": "%cmd.preview.toggleLock%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.preview.refresh",
+        "title": "%cmd.preview.refresh%",
+        "category": "Tootega AsciiDoc",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "tootegaAsciidoc.mode.visual",
+        "title": "%cmd.mode.visual%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.mode.code",
+        "title": "%cmd.mode.code%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.mode.split",
+        "title": "%cmd.mode.split%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleStructure",
+        "title": "%cmd.toggleStructure%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleBold",
+        "title": "%cmd.toggleBold%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleItalic",
+        "title": "%cmd.toggleItalic%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleMonospace",
+        "title": "%cmd.toggleMonospace%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.pasteImage",
+        "title": "%cmd.pasteImage%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.export.html",
+        "title": "%cmd.export.html%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.export.pdf",
+        "title": "%cmd.export.pdf%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.export.markdown",
+        "title": "%cmd.export.markdown%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.export.docbook",
+        "title": "%cmd.export.docbook%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.showCheatSheet",
+        "title": "%cmd.showCheatSheet%",
+        "category": "Tootega AsciiDoc"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleLanguage",
+        "title": "%cmd.toggleLanguage%",
+        "category": "Tootega AsciiDoc"
+      }
+    ],
+    "menus": {
+      "file/newFile": [
+        {
+          "command": "tootegaAsciidoc.newDocument",
+          "group": "file"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "tootegaAsciidoc.openWithTootega",
+          "group": "navigation@1",
+          "when": "resourceLangId == asciidoc && activeCustomEditorId != tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.showPreviewToSide",
+          "group": "navigation@2",
+          "when": "resourceLangId == asciidoc && activeCustomEditorId != tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.showSource",
+          "group": "navigation@1",
+          "when": "activeCustomEditorId == tootega.asciidoc.editor || activeWebviewPanelId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.preview.refresh",
+          "group": "1_tootega@1",
+          "when": "activeWebviewPanelId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.preview.toggleLock",
+          "group": "1_tootega@2",
+          "when": "activeWebviewPanelId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.export.html",
+          "group": "2_export@1",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.export.pdf",
+          "group": "2_export@2",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.export.markdown",
+          "group": "2_export@3",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.export.docbook",
+          "group": "2_export@4",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "tootegaAsciidoc.openWithTootega",
+          "group": "navigation",
+          "when": "resourceLangId == asciidoc"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "tootegaAsciidoc.newDocument",
+          "group": "navigation@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "tootegaAsciidoc.openWithTootega",
+          "group": "navigation",
+          "when": "resourceLangId == asciidoc"
+        },
+        {
+          "command": "tootegaAsciidoc.export.html",
+          "group": "2_export@1",
+          "when": "resourceLangId == asciidoc"
+        },
+        {
+          "command": "tootegaAsciidoc.export.pdf",
+          "group": "2_export@2",
+          "when": "resourceLangId == asciidoc"
+        }
+      ],
+      "webview/context": [
+        {
+          "command": "tootegaAsciidoc.export.html",
+          "group": "1_export@1",
+          "when": "webviewId == tootega.asciidoc.editor || webviewId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.export.pdf",
+          "group": "1_export@2",
+          "when": "webviewId == tootega.asciidoc.editor || webviewId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.export.markdown",
+          "group": "1_export@3",
+          "when": "webviewId == tootega.asciidoc.editor || webviewId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.export.docbook",
+          "group": "1_export@4",
+          "when": "webviewId == tootega.asciidoc.editor || webviewId == tootega.asciidoc.preview"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "tootegaAsciidoc.mode.visual",
+          "when": "activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.mode.code",
+          "when": "activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.mode.split",
+          "when": "activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.toggleStructure",
+          "when": "activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.preview.toggleLock",
+          "when": "activeWebviewPanelId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.preview.refresh",
+          "when": "activeWebviewPanelId == tootega.asciidoc.preview"
+        },
+        {
+          "command": "tootegaAsciidoc.pasteImage",
+          "when": "editorLangId == asciidoc && !isWeb"
+        },
+        {
+          "command": "tootegaAsciidoc.export.html",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.export.pdf",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.export.markdown",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        },
+        {
+          "command": "tootegaAsciidoc.export.docbook",
+          "when": "resourceLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "tootegaAsciidoc.showPreviewToSide",
+        "key": "ctrl+k v",
+        "mac": "cmd+k v",
+        "when": "editorLangId == asciidoc"
+      },
+      {
+        "command": "tootegaAsciidoc.showSource",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "activeCustomEditorId == tootega.asciidoc.editor"
+      },
+      {
+        "command": "tootegaAsciidoc.openWithTootega",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorLangId == asciidoc && editorTextFocus"
+      },
+      {
+        "command": "tootegaAsciidoc.mode.visual",
+        "key": "ctrl+alt+1",
+        "mac": "cmd+alt+1",
+        "when": "activeCustomEditorId == tootega.asciidoc.editor"
+      },
+      {
+        "command": "tootegaAsciidoc.mode.code",
+        "key": "ctrl+alt+2",
+        "mac": "cmd+alt+2",
+        "when": "activeCustomEditorId == tootega.asciidoc.editor"
+      },
+      {
+        "command": "tootegaAsciidoc.mode.split",
+        "key": "ctrl+alt+3",
+        "mac": "cmd+alt+3",
+        "when": "activeCustomEditorId == tootega.asciidoc.editor"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleStructure",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o",
+        "when": "activeCustomEditorId == tootega.asciidoc.editor"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleBold",
+        "key": "ctrl+b",
+        "mac": "cmd+b",
+        "when": "editorLangId == asciidoc && editorTextFocus"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleItalic",
+        "key": "ctrl+i",
+        "mac": "cmd+i",
+        "when": "editorLangId == asciidoc && editorTextFocus"
+      },
+      {
+        "command": "tootegaAsciidoc.toggleMonospace",
+        "key": "ctrl+m",
+        "mac": "cmd+m",
+        "when": "editorLangId == asciidoc && editorTextFocus"
+      },
+      {
+        "command": "tootegaAsciidoc.pasteImage",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "editorLangId == asciidoc && editorTextFocus && !isWeb"
+      },
+      {
+        "command": "tootegaAsciidoc.export.html",
+        "key": "ctrl+alt+s",
+        "mac": "cmd+alt+s",
+        "when": "editorLangId == asciidoc || activeCustomEditorId == tootega.asciidoc.editor"
+      }
+    ],
+    "configuration": {
+      "title": "Tootega AsciiDoc",
+      "properties": {
+        "tootegaAsciidoc.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "pt-BR",
+            "en"
+          ],
+          "default": "auto",
+          "description": "%cfg.language%"
+        },
+        "tootegaAsciidoc.defaultMode": {
+          "type": "string",
+          "enum": [
+            "visual",
+            "code",
+            "split"
+          ],
+          "enumDescriptions": [
+            "%cfg.defaultMode.visual%",
+            "%cfg.defaultMode.code%",
+            "%cfg.defaultMode.split%"
+          ],
+          "default": "visual",
+          "description": "%cfg.defaultMode%"
+        },
+        "tootegaAsciidoc.structurePanel": {
+          "type": "boolean",
+          "default": false,
+          "description": "%cfg.structurePanel%"
+        },
+        "tootegaAsciidoc.preview.scrollPreviewWithEditor": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.preview.scrollPreviewWithEditor%"
+        },
+        "tootegaAsciidoc.preview.scrollEditorWithPreview": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.preview.scrollEditorWithPreview%"
+        },
+        "tootegaAsciidoc.preview.refreshInterval": {
+          "type": "number",
+          "default": 300,
+          "minimum": 50,
+          "description": "%cfg.preview.refreshInterval%"
+        },
+        "tootegaAsciidoc.images.allowRemote": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.images.allowRemote%"
+        },
+        "tootegaAsciidoc.images.pasteDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "%cfg.images.pasteDirectory%"
+        },
+        "tootegaAsciidoc.images.copyIntoWorkspace": {
+          "type": "string",
+          "enum": [
+            "smart",
+            "never"
+          ],
+          "default": "smart",
+          "description": "%cfg.images.copyIntoWorkspace%"
+        },
+        "tootegaAsciidoc.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.diagnostics.enabled%"
+        },
+        "tootegaAsciidoc.export.outputDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "%cfg.export.outputDirectory%"
+        },
+        "tootegaAsciidoc.export.askOutputLocation": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.export.askOutputLocation%"
+        },
+        "tootegaAsciidoc.export.openAfterExport": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.export.openAfterExport%"
+        },
+        "tootegaAsciidoc.export.attributes": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "%cfg.export.attributes%"
+        },
+        "tootegaAsciidoc.export.html.standalone": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.export.html.standalone%"
+        },
+        "tootegaAsciidoc.export.html.embedImages": {
+          "type": "boolean",
+          "default": true,
+          "description": "%cfg.export.html.embedImages%"
+        },
+        "tootegaAsciidoc.export.html.stylesheet": {
+          "type": "string",
+          "default": "",
+          "description": "%cfg.export.html.stylesheet%"
+        },
+        "tootegaAsciidoc.export.pdf.pageSize": {
+          "type": "string",
+          "enum": [
+            "A4",
+            "Letter",
+            "Legal",
+            "A3",
+            "A5"
+          ],
+          "default": "A4",
+          "description": "%cfg.export.pdf.pageSize%"
+        },
+        "tootegaAsciidoc.export.allowOutsideWorkspace": {
+          "type": "boolean",
+          "default": false,
+          "description": "%cfg.export.allowOutsideWorkspace%"
+        },
+        "tootegaAsciidoc.debugLog": {
+          "type": "boolean",
+          "default": false,
+          "description": "%cfg.debugLog%"
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[asciidoc]": {
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+          "comments": "off",
+          "strings": "off",
+          "other": "off"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p webview/tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "gen-icon": "node scripts/gen-icon.mjs",
+    "vscode:prepublish": "node esbuild.mjs --production",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "vsix": "npm run typecheck && npm run clean && npm version patch --no-git-tag-version && vsce package"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@tailwindcss/cli": "^4.3.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/vscode": "^1.97.0",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.27.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.4"
+  },
+  "dependencies": {
+    "lucide-react": "^1.57.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}

@@ -1,0 +1,28 @@
+= Exemplo em português
+Equipe Tootega
+:toc:
+:imagesdir: images
+
+Este documento mostra o editor com a interface em português (`tootegaAsciidoc.language` = `pt-BR`, ou o VS Code
+em português).
+
+== Formatação
+
+Texto em *negrito*, _itálico_, `monoespaçado` e #realçado#. Uma referência a <<tabela>>.
+
+NOTE: A validação do parser aparece no painel *Problemas*; a exportação usa o AsciiDocConverter em WebAssembly.
+
+[[tabela]]
+== Tabela
+
+|===
+|Coluna |Valor
+
+|Modo padrão
+|Visual
+
+|Atalho para Código
+|kbd:[Ctrl+Alt+2]
+|===
+
+image::architecture.png[Arquitetura da extensão]

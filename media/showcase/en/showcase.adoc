@@ -1,0 +1,514 @@
+= AsciiDoc showcase: every element
+Tootega Team <contato@tootega.com.br>; Technical Review <revisao@tootega.com.br>
+v1.0, 2026-10-31: first edition of the showcase
+:toc:
+:toclevels: 3
+:sectnums:
+:sectanchors:
+:experimental:
+:imagesdir: ../images
+:icons: font
+:product: Tootega AsciiDoc
+:min-version: 1.97
+:promo-note!:
+:description: A document that exercises every kind of AsciiDoc element in the Tootega editor.
+:keywords: asciidoc, showcase, editor, wysiwyg
+
+// This file ships with the extension. Edit freely: it is a copy, and the "Open the AsciiDoc showcase" command
+// always restores the original.
+
+[.lead]
+This document is the map of the territory: every section shows one kind of AsciiDoc element, with the variations
+{product} reads and writes. Switch between *Visual*, *Code* and *Split* (kbd:[Ctrl+Alt+1], kbd:[Ctrl+Alt+2],
+kbd:[Ctrl+Alt+3]) and look at the same content from both sides.
+
+This preamble sits before the first section. The table of contents above comes from `:toc:`; section numbers from
+`:sectnums:`. The author line has two authors separated by `;` and the revision line has version, date and remark.
+
+== Text and inline formatting
+
+Plain text with *bold*, _italic_, `monospace`, #highlighted#, ^superscript^ and ~subscript~. The **un**constrained
+forms work inside wo**rd**s, with __ita__lic and ``mono``space. Roles style a span: [.underline]#underlined#,
+[.line-through]#struck#, [.big]#big# and [.small]#small#.
+
+Character replacements: (C) (R) (TM) -- ... -> <- => <= and "`curly`" and '`single`' quotes. Entities and
+intrinsics: {nbsp}non-breaking space, {zwsp}zero-width space, {deg}, {plus}, {amp}, {lt}, {gt}, {startsb}{endsb},
+{caret}, {tilde}, {backslash}, {backtick}, {cpp}.
+
+Attribute reference: the product is {product}, it needs VS Code {min-version} or later. An unset attribute drops
+out: [{promo-note}]. Backslash escapes: \{product} stays literal, and so does \*not bold*.
+
+Hard line break +
+continues on the next line of the same paragraph.
+
+[%hardbreaks]
+In this paragraph every break
+is kept
+without the plus sign.
+
+Inline passthrough: +++<u>raw HTML</u>+++ and pass:q[*with* substitutions]. Literal `+{product}+` does not
+substitute the attribute.
+
+A footnote.footnote:[The footnote text appears at the end of the published document.] A reusable
+one.footnote:note-id[This note has an id and can be cited again.] The same note cited again.footnote:note-id[]
+
+Index terms: ((visible term)) and (((term, index only))) and indexterm:[another,subterm].
+
+=== Links and references
+
+Bare link: https://asciidoc.org. With text: https://docs.asciidoctor.org[Asciidoctor documentation]. In a new
+window: https://tootega.com.br[Tootega^]. E-mail: mailto:contato@tootega.com.br[Contact us]. The `link:` macro for a
+local file: link:../images/diagrama.png[the diagram]. With a role: https://example.org[example,role=external].
+
+Cross references: <<_lists>>, <<format-table,the format table>>, <<inline-anchor>>, xref:_images_and_media[images]
+and, to another file, xref:parts/included.adoc#included-section[the included section]. An inline anchor here:
+[[inline-anchor]]this span carries an anchor, and another with text: anchor:anchor-with-text[Anchor label].
+
+UI elements (need `:experimental:`): kbd:[Ctrl+Shift+P], kbd:[Ctrl+Alt+Del], btn:[Save], btn:[OK],
+menu:File[New File > AsciiDoc Document], menu:View[Command Palette].
+
+=== Inline image and icon
+
+An image in the line image:diagrama.png[diagram,24] and an icon icon:heart[] icon:save[role=green] (with
+`:icons: font` the icon is a glyph; without it, text in brackets).
+
+== Lists
+
+=== Unordered
+
+* First item
+* Second item, with continuation
++
+This paragraph belongs to the second item thanks to the `+` on the line above.
++
+[source,text]
+----
+A block can be attached to the item as well.
+----
+* Third item
+** Nested item
+*** Third level
+**** Fourth level
+***** Fifth level
+- A hyphen marks an item too
+
+.A list with a title
+[square]
+* Square bullet (role `square`)
+* Another
+
+=== Ordered
+
+. First step
+. Second step
+.. Sub-step (letters)
+... Sub-sub-step (roman)
+.... Fourth level
+. Third step
+
+[start=4]
+. Starts at four
+. Five
+
+[%reversed]
+. Countdown three
+. Two
+. One
+
+[loweralpha]
+. a
+. b
+
+[upperroman]
+. One
+. Two
+
+=== Tasks
+
+* [x] Done
+* [ ] Pending
+* [*] Done as well (asterisk)
+
+=== Description
+
+Term:: The definition of the term.
+Long term::
+The definition may start on the next line.
+Term with blocks::
++
+--
+An attached open block with a paragraph.
+
+And another paragraph.
+--
+Nested term::: Second-level definition.
+One more:::: Third level.
+
+[horizontal]
+Key:: Value beside it, horizontal style.
+Another key:: Another value.
+
+[qanda]
+What is AsciiDoc?::
+A lightweight markup language for documentation.
+And DocBook?::
+An XML for publishing, which the converter also produces.
+
+=== Mixed
+
+* Bullet
+. Numbered inside the bullet
+. Another numbered
+** Second-level bullet
+Term:: inside the list
+
+=== Callouts
+
+[source,python]
+----
+def add(a, b):  # <1>
+    return a + b  # <2>
+----
+<1> The function signature.
+<2> The return, without a declared type.
+
+== Blocks
+
+=== Paragraphs and literals
+
+A plain paragraph.
+
+ An indented paragraph becomes a literal block.
+
+[literal]
+Paragraph with an explicit literal style,
+keeping    spaces and breaks.
+
+....
+Delimited literal block.
+  Indentation kept.
+....
+
+=== Code
+
+.Title of the code block
+[source,typescript,linenums]
+----
+export function minimalEdit(oldText: string, newText: string): Edit | null {
+  if (oldText === newText) return null;
+  // computes the common prefix and suffix…
+  return { start: 0, end: oldText.length, text: newText };
+}
+----
+
+```json
+{ "mode": "split", "structureOpen": true }
+```
+
+[source,java]
+----
+include::parts/snippet.java[tag=main]
+----
+
+[listing]
+----
+Listing without a language: fixed font, no highlighting.
+----
+
+----
+A delimited block without a style is a listing too.
+----
+
+=== Example, sidebar and open
+
+.Example with a title (gets "Example 1.")
+====
+Example content. It can hold *formatting* and lists:
+
+* one
+* two
+====
+
+[%collapsible]
+.Click to expand
+====
+Collapsible example: closed by default.
+====
+
+[%collapsible%open]
+====
+Collapsible open by default, without a title ("Details").
+====
+
+.Sidebar
+****
+Related content, set apart from the main flow.
+****
+
+--
+Open block: a generic container.
+
+With two paragraphs.
+--
+
+[abstract]
+--
+Open block with the `abstract` style: the document summary.
+--
+
+=== Quotes and verses
+
+[quote, Donald Knuth, The Art of Computer Programming]
+____
+Premature optimization is the root of all evil.
+____
+
+[quote]
+____
+A quote without attribution.
+____
+
+"A short quote as a paragraph, with the quotation syntax."
+-- Anonymous Author, Source of the quote
+
+[verse, Carl Sandburg, Fog]
+____
+The fog comes
+on little cat feet.
+____
+
+=== Admonitions
+
+NOTE: A paragraph note: the content is a single line.
+
+TIP: Tip: press kbd:[Ctrl+Alt+3] for Split mode.
+
+IMPORTANT: Important: the VS Code document stays the source of truth.
+
+WARNING: Warning: images outside the workspace are denied on export unless configured.
+
+CAUTION: Caution: `:imagesdir:` changes where images are looked up.
+
+[NOTE]
+.Block admonition, with a title
+====
+It can hold several paragraphs.
+
+* Lists
+* Code blocks
+
+[source,sh]
+----
+echo "even code"
+----
+====
+
+[WARNING]
+.One more as a block
+====
+With the style in brackets and the example delimiter.
+====
+
+=== Passthrough, STEM and comments
+
+++++
+<div style="border:1px dashed gray;padding:.5em">Block passthrough: raw HTML that goes into the HTML as is.</div>
+++++
+
+[stem]
+++++
+sqrt(4) = 2
+++++
+
+latexmath:[E = mc^2] inline, and asciimath:[x^2 + y^2 = z^2].
+
+.LaTeX formulas: sum, integral, matrix and cases
+[latexmath]
+++++
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}, \qquad
+\int_0^1 x^2\,dx = \tfrac{1}{3}, \qquad
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}, \qquad
+f(x) = \begin{cases} 1 & x > 0 \\ 0 & \text{otherwise} \end{cases}
+++++
+
+.AsciiMath formula: the quadratic formula
+[asciimath]
+++++
+x = (-b +- sqrt(b^2 - 4ac))/(2a)
+++++
+
+// Line comment: not published.
+
+////
+Block comment:
+none of this is published.
+////
+
+=== Breaks
+
+Before the thematic break.
+
+'''
+
+After the thematic break. Now a page break:
+
+<<<
+
+After the page break.
+
+== Tables
+
+[[format-table]]
+.Export formats
+[cols="1,3", options="header,footer"]
+|===
+|Format |Notes
+
+|HTML
+|Standalone, Asciidoctor stylesheet, embedded images.
+
+|PDF
+|Written by the converter itself; nothing to install.
+
+|Markdown
+|GFM; what GFM cannot express degrades with a warning.
+
+|DocBook 5
+|For publishing chains.
+
+|Total
+|Four formats
+|===
+
+.Spans, alignment and cell styles
+[cols="^1,<2,>1", width=80%]
+|===
+|Centre |Left |Right
+
+2+|Two merged columns |Normal
+.2+|Two merged rows |a |b
+|c |d
+e|emphasis m|mono s|strong
+l|literal
+  with indent
+h|header a|AsciiDoc inside the cell:
+
+* list
+* in the cell
+|===
+
+.CSV
+[%header,format=csv]
+|===
+Name,Value,Unit
+Width,210,mm
+Height,297,mm
+|===
+
+.DSV
+[%header,format=dsv,separator=:]
+|===
+key:value
+a:1
+b:2
+|===
+
+[%autowidth, frame=ends, grid=rows]
+|===
+|Autowidth |frame only top and bottom |grid only between rows
+|x |y |z
+|===
+
+[cols="2*", stripes=even]
+|===
+|Two equal columns |Even stripes
+|a |b
+|===
+
+== Images and media
+
+.Diagram of the extension, with a caption ("Figure 1.")
+image::diagrama.png[Extension host and webview, 480, align=center, link=https://github.com/HermesSilva/TootegaAsciiDoc]
+
+image::diagrama.png[Small,120,float=right,role=thumb]
+
+Text beside the floating image. The image above has `float=right` and the `thumb` role.
+
+image::https://via.placeholder.com/120x40.png?text=remote[Remote image, 120, 40]
+
+video::sample.mp4[width=320, poster=diagrama.png]
+
+video::dQw4w9WgXcQ[youtube]
+
+audio::sample.mp3[options="autoplay,loop"]
+
+== Includes and conditionals
+
+include::parts/included.adoc[leveloffset=+1]
+
+include::parts/included.adoc[tag=summary]
+
+include::parts/included.adoc[lines=3..4]
+
+ifdef::product[]
+This paragraph shows because `product` is defined.
+endif::[]
+
+ifndef::missing-attribute[]
+This one shows because `missing-attribute` is NOT defined.
+endif::[]
+
+ifeval::["{min-version}" == "1.97"]
+And this one because the `ifeval` comparison is true.
+endif::[]
+
+ifdef::promo-note[Single-line conditional: hidden, the attribute was unset.]
+
+:example-counter: 0
+Counters: {counter:example-counter}, {counter:example-counter}, {counter2:example-counter}{example-counter}.
+
+:new-attribute: defined in the body
+An attribute defined in the body applies from here on: {new-attribute}.
+
+== Headings and special sections
+
+=== Level 2
+
+==== Level 3
+
+===== Level 4
+
+====== Level 5
+
+[discrete]
+== Discrete heading
+
+A discrete heading opens no section and is not in the table of contents.
+
+[[section-with-id]]
+[.section-role]
+=== Section with id and role
+
+Referenced as <<section-with-id>>.
+
+[appendix]
+== Appendix
+
+A section with the `appendix` style: it gets "Appendix A".
+
+[bibliography]
+== Bibliography
+
+* [[[asciidoc]]] AsciiDoc Language Specification. Eclipse Foundation.
+* [[[asciidoctor]]] Asciidoctor User Manual.
+
+[glossary]
+== Glossary
+
+WYSIWYG:: What You See Is What You Get.
+GFM:: GitHub Flavored Markdown.
+
+[colophon]
+== Colophon
+
+Written with {product}, exported by AsciiDocConverter.

@@ -1,0 +1,15 @@
+[[included-section]]
+= Included file
+This file enters `showcase.adoc` through `include::parts/included.adoc[leveloffset=+1]`: the level-0 title becomes
+level 1 when included.
+
+// tag::summary[]
+This paragraph sits between `tag::summary[]` and `end::summary[]`, so it also comes in on its own with
+`include::parts/included.adoc[tag=summary]`.
+// end::summary[]
+
+== Section of the included file
+
+With `leveloffset=+1` this section becomes level 2. And it includes another file, by a path relative to THIS file:
+
+include::nested.adoc[]

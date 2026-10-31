@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" width="640" height="260" font-family="Segoe UI, Arial, sans-serif" font-size="14">
+  <rect width="640" height="260" fill="#f8fafc"/>
+  <g>
+    <rect x="24" y="40" width="200" height="180" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+    <text x="124" y="66" text-anchor="middle" font-weight="bold" fill="#1e3a8a">Extension host</text>
+    <text x="124" y="96" text-anchor="middle" fill="#1e293b">CustomTextEditorProvider</text>
+    <text x="124" y="118" text-anchor="middle" fill="#1e293b">PreviewManager</text>
+    <text x="124" y="140" text-anchor="middle" fill="#1e293b">language features</text>
+    <text x="124" y="162" text-anchor="middle" fill="#1e293b">export (worker + wasm)</text>
+  </g>
+  <g>
+    <rect x="416" y="40" width="200" height="180" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="516" y="66" text-anchor="middle" font-weight="bold" fill="#14532d">Webview (React 19)</text>
+    <text x="516" y="96" text-anchor="middle" fill="#1e293b">XEditorAsciiDoc</text>
+    <text x="516" y="118" text-anchor="middle" fill="#1e293b">theme bridge</text>
+    <text x="516" y="140" text-anchor="middle" fill="#1e293b">i18n (pt-BR / en)</text>
+    <text x="516" y="162" text-anchor="middle" fill="#1e293b">preview view</text>
+  </g>
+  <g stroke="#475569" stroke-width="2" fill="none">
+    <path d="M224 110 H416"/>
+    <path d="M408 104 l8 6 -8 6"/>
+    <path d="M416 150 H224"/>
+    <path d="M232 144 l-8 6 8 6"/>
+  </g>
+  <text x="320" y="100" text-anchor="middle" fill="#475569">init / update / setMode</text>
+  <text x="320" y="172" text-anchor="middle" fill="#475569">edit / state / openResource</text>
+  <text x="320" y="246" text-anchor="middle" fill="#64748b" font-size="12">The VS Code TextDocument is the source of truth.</text>
+</svg>

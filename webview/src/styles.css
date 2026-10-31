@@ -1,0 +1,94 @@
+/* The webview stylesheet. Processed by the Tailwind v4 CLI (see esbuild.mjs): the engine's design system (which
+   itself imports Tailwind and the engine's tailwind.config.js) plus the editor CSS, plus the few rules of the shell.
+   `@source` tells Tailwind where the utility classes live — the engine components and this webview. */
+@import "../../TootegaWebUI/src/styles/index.css";
+@import "../../TootegaWebUI/src/components/asciidoc/asciidoc.css";
+@import "../../TootegaWebUI/src/lib/formula/formula.css";
+
+/* Latin Modern Math (GUST Font License, media/fonts/GUST-FONT-LICENSE.txt): the same math font on Windows and Linux,
+   so formulas do not depend on what the system has installed (DF-4). */
+@font-face {
+  font-family: 'Latin Modern Math';
+  src: url('../../media/fonts/latinmodern-math.otf') format('opentype');
+  font-display: swap;
+}
+@source "../../TootegaWebUI/src/components";
+@source "./";
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background: hsl(var(--brand-surface));
+  color: hsl(var(--text-primary));
+  font-family: var(--adc-fonte-ui, var(--vscode-font-family, system-ui, sans-serif));
+}
+
+.tad-shell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tad-shell > .adc-editor {
+  border: none;
+  border-radius: 0;
+}
+
+.tad-message {
+  margin: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid hsl(var(--border-color));
+  background: hsl(var(--brand-background));
+  color: hsl(var(--text-secondary));
+}
+
+.tad-message-erro {
+  border-color: hsl(var(--danger));
+  background: hsl(var(--danger-bg));
+  color: hsl(var(--text-primary));
+}
+
+.tad-message-erro h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+/* The side preview: the engine's WYSIWYG view, read-only, with the same page metrics as the editor. */
+.tad-preview {
+  height: 100%;
+  overflow: auto;
+  padding: 0 1rem 2rem;
+}
+
+.tad-preview .adc-raiz {
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.tad-preview .adc-cabecalho input {
+  pointer-events: none;
+}
+
+.tad-preview-selecao {
+  outline: 2px solid hsl(var(--brand-primary) / 0.45);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Code font follows the VS Code editor font. */
+.adc-codigo-textarea,
+.adc-codigo-linhas,
+.adc-codigo-sonda,
+.adc-bloco-codigo textarea,
+.adc-mono {
+  font-family: var(--adc-fonte-codigo, var(--vscode-editor-font-family, ui-monospace, monospace));
+}

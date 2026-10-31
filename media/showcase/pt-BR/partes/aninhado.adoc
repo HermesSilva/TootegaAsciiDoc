@@ -1,0 +1,2 @@
+Este parágrafo vem de `partes/aninhado.adoc`, incluído por `partes/incluido.adoc` com caminho relativo a ele — o
+caso que o conversor resolve pela origem da diretiva.

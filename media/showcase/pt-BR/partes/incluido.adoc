@@ -1,0 +1,15 @@
+[[secao-incluida]]
+= Arquivo incluído
+Este arquivo entra em `exemplo-completo.adoc` por `include::partes/incluido.adoc[leveloffset=+1]`: o título de nível 0
+vira nível 1 na inclusão.
+
+// tag::resumo[]
+Este parágrafo está entre `tag::resumo[]` e `end::resumo[]`, e por isso também entra sozinho com
+`include::partes/incluido.adoc[tag=resumo]`.
+// end::resumo[]
+
+== Seção do arquivo incluído
+
+Com `leveloffset=+1` esta seção vira nível 2. E ela inclui outro arquivo, por caminho relativo a ESTE arquivo:
+
+include::aninhado.adoc[]

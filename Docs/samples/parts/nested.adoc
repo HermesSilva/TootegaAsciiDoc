@@ -1,0 +1,2 @@
+This paragraph comes from `parts/nested.adoc`, included by `parts/included.adoc` with a path relative to *that* file —
+the case the converter resolves through the origin of the directive.
