@@ -22,7 +22,11 @@ package-vsix.*
 *.vsix
 !dist/**
 !l10n/**
-!media/**
+!media/icon.png
+!media/icon.svg
+!media/file-icon.svg
+!media/fonts/**
+!media/showcase/**
 !syntaxes/**
 !snippets/**
 !language-configuration.json
@@ -31,3 +35,4 @@ package-vsix.*
 !README.md
 !CHANGELOG.md
 dist/**/*.map
+media/readme/**
