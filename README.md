@@ -1,88 +1,134 @@
-# Tootega AsciiDoc for VS Code
+<p align="center">
+  <img src="media/icon.png" width="112" alt="Tootega AsciiDoc">
+</p>
 
-A complete AsciiDoc editor for Visual Studio Code: **WYSIWYG**, **code with highlighting** and **real-time preview**,
-plus export to **HTML, PDF, Markdown and DocBook 5** — all native, with no external tool to install. Interface in
-Brazilian Portuguese and international English.
+<h1 align="center">Tootega AsciiDoc</h1>
 
-Benchmark: the official Asciidoctor extension (4.2) — at its level or better (parity matrix in
-[`Docs/PLAN.md`](Docs/PLAN.md) §4).
+<p align="center">
+  <b>The complete AsciiDoc editor for Visual Studio Code.</b><br>
+  WYSIWYG, code and split editing on one document · live view · typeset formulas · export to HTML, PDF, Markdown and DocBook —
+  all inside VS Code, nothing to install, nothing sent anywhere.
+</p>
 
-## What you get
+<p align="center">
+  <img src="media/readme/typing.png" width="800" alt="Typing in Split mode: the code on the left, the live document on the right, one cursor shared by both">
+</p>
 
-- **Tootega editor** as the default for `.adoc`, `.asciidoc`, `.asc` and `.ad`: three modes — *Visual* (WYSIWYG),
-  *Code* (AsciiDoc with highlighting, find/replace, go to line) and *Split* (code on the left, live view on the
-  right) — a structure panel, undo/redo, and dialogs for links, images, tables, cross references, footnotes,
-  attributes, keyboard/button/menu macros and anchors. *Show source* returns to the native text editor.
-- **The VS Code text document stays the source of truth**: save, dirty state, hot exit, Git and diff work as for
-  any file; external changes flow back into the editor.
-- **Preview to the side** of the native text editor (`Ctrl+K V`), with scroll sync both ways, lock and refresh.
-- **Native editor support**: TextMate grammar, snippets, outline and workspace symbols, folding, document links
-  (includes, images, xrefs, URLs), attribute hover, completion (attributes, anchors, paths), paste/drop images
-  (saved into `:imagesdir:`), parser diagnostics in the Problems panel, `Ctrl+B` / `Ctrl+I` / `Ctrl+M`.
-- **Export** (title-bar menu, context menus, `Ctrl+Alt+S` for HTML): HTML (standalone, Asciidoctor stylesheet,
-  images embedded), PDF (written by the converter — nothing to install), Markdown (GFM) and DocBook 5, through the
-  [AsciiDocConverter](https://github.com/HermesSilva/AsciiDocConverter) library compiled to WebAssembly. Converter
-  messages appear in the Problems panel.
-- **Cheat sheet** command with the syntax in the interface language.
-- **Formulas** (`stem`, `latexmath`, `asciimath`) typeset by the editor's own TeX/AsciiMath → MathML engine, in the
-  views and in HTML/DocBook exports — no third-party math library; Latin Modern Math ships with the extension.
+---
 
-## Architecture
+## Why Tootega AsciiDoc
 
-```
-TootegaAsciiDoc/
-├── src/            extension host (TypeScript, VS Code API)
-│   ├── editor/     CustomTextEditorProvider, minimal-diff sync, webview HTML
-│   ├── preview/    side preview with scroll sync
-│   ├── language/   symbols, folding, links, hover, completion, diagnostics, image paste, formatting
-│   ├── export/     worker_thread + WebAssembly converter
-│   └── cheatsheet/
-├── webview/        React 19 webview: App, PreviewView, theme bridge, i18n
-├── shared/         protocol and pure helpers shared by host and webview
-├── TootegaWebUI/   the editor engine — separate repository, checked out here (ignored by git)
-├── syntaxes/ snippets/ l10n/ media/
-└── Docs/           PLAN.md (decisions, phases) and samples/
-```
+Most AsciiDoc tooling for VS Code gives you a text editor and a preview. Tootega AsciiDoc gives you an **editor**:
+you can write in a rich view, in the source, or in both at once, and the document underneath is always the same
+`.adoc` file — saved, diffed and versioned by VS Code like any other text file.
 
-The editor engine is `@Tootega/core` ([TootegaWebUI](https://github.com/Tootega/TootegaWebUI)),
-`src/components/asciidoc`. It is reached through the `@core` alias (esbuild and tsconfig), **not** through npm,
-because the engine ships its own `node_modules` and a second React copy would break the hooks. The webview
-stylesheet is built by the Tailwind v4 CLI from the engine's design system; a theme bridge converts the
-`--vscode-*` colours into the engine's HSL tokens, so the editor follows every VS Code theme.
+| | |
+|---|---|
+| **Three modes, one document** | *Visual* (WYSIWYG), *Code* (highlighted AsciiDoc with find/replace and go-to-line) and *Split* (both, side by side, editable on either side). Switch at any time; nothing is converted, nothing is lost. |
+| **A cursor that works both ways** | In Split mode the side you are not typing in shows a ghost caret where you are. Click in the view and the code follows; move in the code and the view scrolls to the spot. |
+| **The toolbar is the same everywhere** | Bold, lists, headings, tables, links, images, admonitions, footnotes, anchors, formulas… every button works in the visual editor **and** as a text edit in the code editor. |
+| **Formulas typeset for real** | `stem`, `latexmath` and `asciimath` are rendered by the extension's own TeX/AsciiMath engine into MathML — live in the editor and in your HTML/DocBook exports. |
+| **Export without a toolchain** | HTML 5, PDF, Markdown and DocBook 5 come from a C library compiled to WebAssembly and run in a worker thread. No Ruby, no Java, no Asciidoctor install, no network, no telemetry. |
+| **Native VS Code citizen** | Grammar, snippets, outline, folding, links, hover, completion, image paste, diagnostics in the Problems panel, side preview with two-way scroll sync, settings in your language. |
+| **Bilingual** | Brazilian Portuguese and international English, following your VS Code display language. |
 
-## Building
+## The editor
 
-Prerequisites: Node 20+, the engine checkout and (for export) the converter's `.wasm`.
+<p align="center">
+  <img src="media/readme/hero.png" width="1000" alt="Split mode: highlighted AsciiDoc on the left, the rendered document on the right, with the virtual cursor marking the same position on both sides">
+</p>
 
-```powershell
-git clone https://github.com/HermesSilva/TootegaAsciiDoc.git
-cd TootegaAsciiDoc
-git clone https://github.com/Tootega/TootegaWebUI.git           # at the root, folder TootegaWebUI
-git clone https://github.com/HermesSilva/AsciiDocConverter.git ..\AsciiDocConverter   # sibling; Dist/ has the .wasm
-npm install
-npm run build          # dist/extension.js, dist/export-worker.js, dist/webview/*, dist/AsciiDocConverter.wasm
-npm run typecheck      # host + webview
-npm test               # host unit tests (vitest)
-.\run-dev.ps1          # opens VS Code with the extension loaded on Docs/samples (also run-dev.sh / run-dev.cmd)
-.\package-vsix.ps1     # builds the .vsix — THE only way to package (see below)
-```
+- **Visual mode** edits the document as you will read it: headings, paragraphs, lists (bulleted, numbered, tasks,
+  description), tables with row/column tools, admonitions, examples, sidebars, quotes, code blocks with highlighting
+  and a language selector, images resolved against `:imagesdir:`, includes shown as blocks you can open, formulas,
+  comments, attributes — every AsciiDoc block has a place on screen and round-trips back to the same source.
+- **Code mode** is a real AsciiDoc editor: syntax highlighting, bracket pairs, find/replace with regex, go to line,
+  and the same toolbar acting on the text (`Ctrl+B`, `Ctrl+I`, `Ctrl+K`, list and heading shortcuts).
+- **Split mode** shows both over the same document. Edit on either side; the other updates in a moment, with the
+  shared cursor keeping your place.
+- **Structure panel** with the heading tree, **undo/redo across modes**, and contained dialogs for links, images
+  (with width/height), tables, cross references (with the document's anchors suggested), footnotes, attributes,
+  keyboard/button/menu macros, anchors and formulas (with a live preview).
+- **Nothing is lost**: what the visual model does not represent is carried as written — list styles, block options,
+  roles, attribute lines — so a document edited in Visual mode serializes back to the AsciiDoc you would have typed.
 
-**Build number.** The Marketplace only accepts `major.minor.patch`, so the **patch is the build number**: every run of
-`package-vsix.ps1` / `.sh` / `.cmd` (or `npm run vsix`) bumps it (`npm version patch`), writes `tootega-asciidoc-<version>.vsix`
-and the extension logs its version on activation (output channel "Tootega AsciiDoc"). Never call `vsce package`
-directly — that produces a package without a new build number. Commit the bumped `package.json`/`package-lock.json`
-with the build. `major.minor` change by hand when a release deserves it.
+## Formulas, the honest way
 
-`ASCIIDOCCONVERTER_ROOT` points the build at another checkout of the converter; without the `.wasm`, everything
-but export works and the export command says exactly what is missing.
+<p align="center">
+  <img src="media/readme/formulas.png" width="1000" alt="Formulas in TeX and AsciiMath typeset in the view">
+</p>
 
-## Settings
+The math engine is written for this editor: a TeX lexer, macro expander (`\def`, `\newcommand`, `\let`, delimited
+parameters…), recursive-descent parser, a symbol table of about 1 000 math and 650 text commands, the full function
+and environment surface you expect from KaTeX (fractions, roots, accents, sized delimiters, big operators with
+limits, matrices, `cases`, `align`, `gather`, `equation`, extensible arrows, colour, styles, phantoms, enclosures,
+tags…) and an AsciiMath parser to the same tree. The output is **MathML Core**, laid out by VS Code's own renderer,
+with Latin Modern Math shipped in the package so formulas look the same on Windows and Linux.
 
-All under `tootegaAsciidoc.*`: interface language, default mode, structure panel, preview scroll sync and refresh
-interval, remote images, paste directory and copy policy, diagnostics, export output folder / ask location / open
-after export / attributes / HTML standalone / embed images / stylesheet / PDF page size / allow resources outside
-the workspace, spell check, debug log. Descriptions appear in the Settings UI in your language.
+No third-party math library is bundled or downloaded. The engine is checked against KaTeX's MathML as a test oracle
+(289 of 328 corpus formulas structurally identical, every remaining difference documented); unknown commands render
+as marked errors with a readable warning — never silently.
+
+## Export
+
+<p align="center">
+  <img src="media/readme/export.png" width="1000" alt="Export to HTML 5, PDF, Markdown and DocBook 5">
+</p>
+
+Export from the title bar, the context menu or `Ctrl+Alt+S` (HTML). The converter is the
+[AsciiDocConverter](https://github.com/HermesSilva/AsciiDocConverter) C11 library compiled to WebAssembly and run in a
+worker thread, so the editor never freezes and the same bytes produce the same output on every platform.
+
+- **HTML 5** — standalone, Asciidoctor stylesheet, images embedded as data URIs, formulas as MathML, optional
+  custom stylesheet.
+- **PDF** — written directly by the converter; page size configurable; nothing else to install.
+- **Markdown** — GitHub-flavoured.
+- **DocBook 5** — with `<inlineequation>`/`<informalequation>` MathML.
+
+Converter messages (with file and line) go to the Problems panel; the output can open automatically.
+
+## Performance and footprint
+
+- **Local and offline.** Parsing, rendering, formulas and export all run inside VS Code. No service calls.
+- **Instant feedback.** The visual model updates per keystroke; the split view re-parses with a short debounce so
+  typing stays smooth on long documents; the code editor virtualises long files.
+- **Light.** One `.vsix` of about 3 MB, including the WebAssembly converter and the math font. The webview bundles a
+  single React and the engine's stylesheet; the host is one file.
+- **Safe by construction.** The webview runs under a strict Content Security Policy; export reads only inside your
+  workspace unless you allow otherwise; the extension never writes to a file you did not ask for.
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| **New AsciiDoc document** | File › New File… or the palette: creates a file with a skeleton in your language and opens it in the editor. |
+| **Edit full elements sample** | Opens an editable copy of a complete sample covering every AsciiDoc element — the fastest tour of the editor. |
+| **Open with Tootega / Show source** | Switch between the Tootega editor and the native text editor. |
+| **Visual / Code / Split**, **Toggle structure** | Editor modes and the heading panel. |
+| **Preview to the side**, **Lock preview**, **Refresh** | Live view next to the native editor (`Ctrl+K V`), scroll-synced both ways. |
+| **Export to HTML / PDF / Markdown / DocBook** | Also in the editor title bar and the Explorer context menu. |
+| **AsciiDoc cheat sheet** | The syntax the editor reads and writes, in your language. |
+
+Settings live under `tootegaAsciidoc.*` (default mode, language, preview sync, image paste folder, export options, PDF
+page size, diagnostics and more), with descriptions in Portuguese and English.
+
+## Compatibility
+
+- VS Code 1.97 or later, Windows and Linux (macOS works where VS Code runs; the math font is bundled, so no system
+  font is required).
+- File types: `.adoc`, `.asciidoc`, `.asc`, `.ad` — Tootega is the default editor; "Reopen With…" gives you the text
+  editor at any time.
+- Installs alongside the official Asciidoctor extension (both contribute the `asciidoc` language; "Reopen With…"
+  picks the editor for a file).
+
+## Contributing and building
+
+Development notes, architecture and the build/packaging rules are in
+[`Docs/DEVELOPMENT.md`](https://github.com/HermesSilva/TootegaAsciiDoc/blob/master/Docs/DEVELOPMENT.md). The editor
+engine is the open [TootegaWebUI](https://github.com/HermesSilva/TootegaWebUI) repository; the converter is
+[AsciiDocConverter](https://github.com/HermesSilva/AsciiDocConverter).
 
 ## License
 
-MIT — Tootega Pesquisa e Inovação.
+MIT — © Tootega Pesquisa e Inovação. Latin Modern Math is distributed under the GUST Font License (see
+`media/fonts/GUST-FONT-LICENSE.txt`).

@@ -3,7 +3,7 @@
   "displayName": "Tootega AsciiDoc",
   "description": "%ext.description%",
   "icon": "media/icon.png",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "publisher": "HermesSilva",
   "license": "MIT",
   "author": {

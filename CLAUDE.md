@@ -57,8 +57,11 @@ nonce, theme bridge `--vscode-*` → the engine's HSL tokens, `l10n/` + `package
 - **Never launch the extension** (`run-dev.ps1`, Extension Development Host) — the owner does it.
 - **Packaging only through `package-vsix.ps1`/`.sh`/`.cmd`** (owner, 2026-10-31): the patch number is the build number
   and every package bumps it; a bare `vsce package` is forbidden because it ships a repeated build number.
-- **Never commit, push, create or switch branches** without the owner's explicit request. One request, one commit;
-  no AI signature in commit messages. A change that crosses repositories = one commit per repository.
+- **Never commit or push** without the owner's explicit request. One request, one commit; no AI signature in commit
+  messages. A change that crosses repositories = one commit per repository.
+- **Workflow (owner, 2026-10-31): every change goes on its own branch, then a pull request into `master`, and the PR
+  deletes the branch on merge** (repository setting `delete_branch_on_merge`, plus `--delete-branch` when merging
+  with `gh`). No direct pushes to `master`. Branch names in kebab-case describing the change.
 - **Shells:** PowerShell 7 is the default (`D:\Tootega\Source\TootegaAsciiDoc`, temp `$env:TEMP`, no heredoc);
   Git Bash only for POSIX (`/d/Tootega/Source/TootegaAsciiDoc`); WSL for real Linux
   (`/mnt/d/Tootega/Source/TootegaAsciiDoc`). Never mix one shell's syntax with another's paths.
