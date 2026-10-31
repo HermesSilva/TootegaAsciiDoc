@@ -55,6 +55,8 @@ nonce, theme bridge `--vscode-*` → the engine's HSL tokens, `l10n/` + `package
   `npx tsc -b` in the ERP `Front/App` when the engine's public API changes). Tests only when the owner asks or the
   task is a test task; then only the related ones.
 - **Never launch the extension** (`run-dev.ps1`, Extension Development Host) — the owner does it.
+- **Packaging only through `package-vsix.ps1`/`.sh`/`.cmd`** (owner, 2026-10-31): the patch number is the build number
+  and every package bumps it; a bare `vsce package` is forbidden because it ships a repeated build number.
 - **Never commit, push, create or switch branches** without the owner's explicit request. One request, one commit;
   no AI signature in commit messages. A change that crosses repositories = one commit per repository.
 - **Shells:** PowerShell 7 is the default (`D:\Tootega\Source\TootegaAsciiDoc`, temp `$env:TEMP`, no heredoc);

@@ -64,8 +64,14 @@ npm run build          # dist/extension.js, dist/export-worker.js, dist/webview/
 npm run typecheck      # host + webview
 npm test               # host unit tests (vitest)
 .\run-dev.ps1          # opens VS Code with the extension loaded on Docs/samples (also run-dev.sh / run-dev.cmd)
-.\package-vsix.ps1     # builds the .vsix
+.\package-vsix.ps1     # builds the .vsix — THE only way to package (see below)
 ```
+
+**Build number.** The Marketplace only accepts `major.minor.patch`, so the **patch is the build number**: every run of
+`package-vsix.ps1` / `.sh` / `.cmd` (or `npm run vsix`) bumps it (`npm version patch`), writes `tootega-asciidoc-<version>.vsix`
+and the extension logs its version on activation (output channel "Tootega AsciiDoc"). Never call `vsce package`
+directly — that produces a package without a new build number. Commit the bumped `package.json`/`package-lock.json`
+with the build. `major.minor` change by hand when a release deserves it.
 
 `ASCIIDOCCONVERTER_ROOT` points the build at another checkout of the converter; without the `.wasm`, everything
 but export works and the export command says exactly what is missing.

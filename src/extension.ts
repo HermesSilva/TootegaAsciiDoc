@@ -13,7 +13,9 @@ import { disposeLogger, log, setDebugLogging } from './util/logger';
 export function activate(context: vscode.ExtensionContext): void {
   const cfg = () => vscode.workspace.getConfiguration('tootegaAsciidoc');
   setDebugLogging(cfg().get<boolean>('debugLog', false));
-  log('Tootega AsciiDoc activating…');
+  // The patch number is the build number (bumped by package-vsix.* on every package): it must be visible in the log.
+  const version = String((context.extension.packageJSON as { version?: string }).version ?? '?');
+  log(`Tootega AsciiDoc ${version} activating…`);
 
   const editor = AsciiDocEditorProvider.register(context);
   const preview = new PreviewManager(context);
