@@ -56,7 +56,16 @@ edit** (model gap, `it.todo` in the same test): the `^` target and `role=` of a 
 - **wasm toolchain**: wasi-sdk 25 downloaded into WSL (`~/wasi-sdk`), not a Docker image (daemon was down). `build-wasm.sh` looks in `WASI_SDK_PATH`, `~/wasi-sdk`, `/opt/wasi-sdk`.
 - **Message translation inside the library is by exact pt-BR text** (table in `adc_mensagens_en.c`), not by message ids — zero changes at the 58 call sites; a new message must be added to the table in the same commit.
 
-## Repositories touched (nothing committed)
+## Repositories touched — published on 2026-10-31 ("pode publicar")
+
+| Repository | What happened |
+|------------|---------------|
+| `HermesSilva/TootegaAsciiDoc` | first commit `a388215` pushed to `master`; `tootega-asciidoc-0.1.0.vsix` built (3.34 MB, 34 files) — not in the Marketplace yet: `vsce publish` needs the publisher's personal access token, which is not on this machine |
+| `Tootega/TootegaCore` | commit `9d89ec2` pushed to `master` |
+| `HermesSilva/AsciiDocConverter` | `master` only accepts pull requests: branch `versao-0.2.0` pushed, PR #1 open |
+| `HermesSilva/TootegaWebUI` (moved from `Tootega/`) | `master` requires a PR and the "Typecheck + testes puros" check: branch `editor-asciidoc-formulas` pushed (rebased on upstream, two upstream pure tests adjusted for the `inclusao` block), PR #1 open; 145 tests pass locally |
+
+## Repositories touched (state before publication)
 
 | Repository | Branch | Change |
 |------------|--------|--------|
