@@ -52,6 +52,12 @@ and the extension logs its version on activation (output channel "Tootega AsciiD
 directly — that produces a package without a new build number. Commit the bumped `package.json`/`package-lock.json`
 with the build. `major.minor` change by hand when a release deserves it.
 
+**README images.** The Marketplace only shows images from HTTPS URLs, so the package must not depend on a pull request
+being merged: `package-vsix.*` runs `scripts/publish-readme-media.mjs`, which pushes `media/readme/*` and `media/icon.png`
+to the `assets` branch (git plumbing, no checkout; the branch is never deleted and is not `master`) and passes
+`--baseImagesUrl https://raw.githubusercontent.com/HermesSilva/TootegaAsciiDoc/assets` to `vsce`. Packaging therefore
+needs network access to GitHub; without it the script stops instead of shipping broken images.
+
 `ASCIIDOCCONVERTER_ROOT` points the build at another checkout of the converter; without the `.wasm`, everything
 but export works and the export command says exactly what is missing.
 
