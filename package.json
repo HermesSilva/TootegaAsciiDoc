@@ -3,7 +3,7 @@
   "displayName": "Tootega AsciiDoc",
   "description": "%ext.description%",
   "icon": "media/icon.png",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "publisher": "HermesSilva",
   "license": "MIT",
   "author": {
@@ -613,7 +613,7 @@
     "gen-icon": "node scripts/gen-icon.mjs",
     "vscode:prepublish": "node esbuild.mjs --production",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
-    "vsix": "npm run typecheck && npm run clean && npm version patch --no-git-tag-version && vsce package"
+    "vsix": "pwsh -NoProfile -ExecutionPolicy Bypass -File package-vsix.ps1"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",
