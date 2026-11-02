@@ -49,6 +49,32 @@ edit** (model gap, `it.todo` in the same test): the `^` target and `role=` of a 
 - **Deferred by plan**: Kroki, Antora, web extension (vscode.dev), source highlighting in exported HTML/PDF.
 - **O-3** (coexistence with the official extension — both contribute language `asciidoc`): not exercised; VS Code merges grammars by precedence, and both custom editors show in "Reopen with…". To be checked by the owner in a real install.
 
+## Performance (2026-11-02)
+
+`test/perf/` measures, and never fails on a time. `npx vitest run --config test/perf/vitest.perf.config.mts` covers the
+parser, serializer, tokenizer, formulas, host and the real webview under jsdom. `node test/perf/browser.mjs <label> [<compare>]`
+types into the production bundle in a real headless Chrome. Trust Chrome over jsdom: jsdom's DOM queries are about 450
+times slower and it has no layout, and it pointed at the wrong costs. One Chrome run is noisy, so compare builds by
+alternating them.
+
+Changed in the engine, all proven by a differential run against the old code (300,000 inline inputs, 4,002 documents,
+23,890 blocks with the same lines as the parser):
+
+- **Fixed a hang**: a line with a lone `+` outside a list made `blocos()` loop until out of memory, in the webview and
+  in the host's diagnostics. It is now a paragraph.
+- The inline parser is linear on unclosed marks and macros (it was quadratic).
+- A reparse reuses the blocks that did not change (`editor/reaproveitarBlocos.ts`), so React no longer remounts the view.
+- The visual emission takes the block lines from the serializer instead of reparsing, and the serializer memoizes per block.
+- Word and character counts run after a pause, not on every key.
+
+Tried and rejected, with numbers: `content-visibility: auto` on the blocks (typing 44 to 27 ms in 549 KB, but opening in
+Split went from 1 s to 16 s and in Visual doubled); deferring `posicionarCursor`, `contain: strict` on the panels and
+`transform` on the virtual cursor (no gain).
+
+Open: typing on the visual side of Split costs 234 ms per key in 549 KB (38 ms in 110 KB), almost all of it layout. The trace
+shows 14 dirty objects taking 26 ms against 1.5 ms in Visual mode; the cause was not found. Rendering only the visible
+blocks was not attempted: the costs left do not justify the risk with selection in `contenteditable`.
+
 ## Deviations from the plan (recorded)
 
 - **Engine reached by alias, not by `file:`** (`@core` → `TootegaWebUI/src` in esbuild + tsconfig; `react`, `react-dom`, `lucide-react` pinned to this package's copies). Reason: `TootegaWebUI/node_modules` exists and esbuild would bundle a second React, which breaks hooks.
